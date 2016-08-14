@@ -1,0 +1,14 @@
+Description:
+  Install basic configs for webpacked integration
+
+Example:
+  bin/rails generate webpacked:install
+
+  This will create:
+    frontend/app
+    frontend/lib
+    frontend/base.config.js
+    frontend/development.config.js
+    frontend/main.config.js
+    frontend/production.config.js
+    frontend/dev-server.js
