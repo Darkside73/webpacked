@@ -17,9 +17,11 @@ module Webpacked
 
     def asset_tag(entry, kind)
       path = webpacked_asset_path(entry, kind)
-      case kind
-      when :js  then javascript_include_tag path
-      when :css then stylesheet_link_tag    path
+      if path
+        case kind
+        when :js  then javascript_include_tag path
+        when :css then stylesheet_link_tag    path
+        end
       end
     end
 

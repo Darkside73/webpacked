@@ -34,6 +34,15 @@ describe Webpacked::Helper do
     end
   end
 
+  describe ".asset_tag" do
+    context "when common entry is missed" do
+      it "return nil" do
+        allow(Webpacked::Manifest).to receive(:asset_paths).with(@common, :css).and_return(nil)
+        expect(helper.asset_tag @common, :css).to be_nil
+      end
+    end
+  end
+
   describe ".webpacked_asset_path" do
     let(:entry) { "main_page" }
     let(:kind) { :js }

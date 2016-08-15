@@ -13,11 +13,11 @@ module DummyApplicationHelper
   include Webpacked::Helper
 
   def javascript_include_tag(path)
-    path
+    "js: #{path}"
   end
 
   def stylesheet_link_tag(path)
-    path
+    "css: #{path}"
   end
 end
 
