@@ -1,0 +1,10 @@
+{
+  "common": {
+    "js": "/assets/webpack/bundle-common.js",
+    "css": "/./assets/webpack/bundle-common.css"
+  },
+  "main_page": {
+    "js": "/assets/webpack/bundle-main_page.js",
+    "css": "/assets/webpack/bundle-main_page.css"
+  }
+}

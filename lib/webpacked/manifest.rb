@@ -21,22 +21,17 @@ module Webpacked
 
       def asset_paths(entry, kind)
         validate_asset_kind(kind)
-
-        if ::Rails.configuration.webpacked.dev_server
+        if Rails.configuration.webpacked.dev_server
           @manifest = load_manifest!
         else
           @manifest ||= load_manifest!
         end
-
         validate_entry(entry)
-
-        if @manifest.dig(entry, kind.to_s)
-          @manifest[entry][kind]
-        end
+        @manifest[entry][kind] if @manifest[entry]
       end
 
       def load_manifest!
-        assets_manifest = ::Rails.root.join(Rails.configuration.webpacked.manifest_path)
+        assets_manifest = Rails.root.join(Rails.configuration.webpacked.manifest_path)
         manifest = {}
         if File.exist?(assets_manifest)
           manifest = JSON.parse(File.read assets_manifest).with_indifferent_access
@@ -54,7 +49,9 @@ module Webpacked
       end
 
       def validate_entry(entry)
-        raise EntryMissingError, entry unless @manifest[entry]
+        unless entry == Rails.configuration.webpacked.common_entry_name
+          raise EntryMissingError, entry unless @manifest[entry]
+        end
       end
 
       def clean_asset_paths(manifest)

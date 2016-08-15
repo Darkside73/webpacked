@@ -13,8 +13,8 @@ describe Webpacked::Helper do
     let(:js_common_path) { "/path/to/common.js" }
     let(:js_other_path) { "/path/to/main.js" }
     it "return js script tags including common entry" do
-      allow(Webpacked::Manifest).to receive(:asset_paths).with(:js, entry).and_return(js_other_path)
-      allow(Webpacked::Manifest).to receive(:asset_paths).with(:js, @common).and_return(js_common_path)
+      allow(Webpacked::Manifest).to receive(:asset_paths).with(entry, :js).and_return(js_other_path)
+      allow(Webpacked::Manifest).to receive(:asset_paths).with(@common, :js).and_return(js_common_path)
 
       expect(helper.webpacked_js_tags entry)
         .to include(js_other_path, js_common_path)
@@ -26,8 +26,8 @@ describe Webpacked::Helper do
     let(:css_common_path) { "/path/to/common.css" }
     let(:css_other_path) { "/path/to/main.css" }
     it "return css stylesheet link tags including common entry" do
-      allow(Webpacked::Manifest).to receive(:asset_paths).with(:css, entry).and_return(css_other_path)
-      allow(Webpacked::Manifest).to receive(:asset_paths).with(:css, @common).and_return(css_common_path)
+      allow(Webpacked::Manifest).to receive(:asset_paths).with(entry, :css).and_return(css_other_path)
+      allow(Webpacked::Manifest).to receive(:asset_paths).with(@common, :css).and_return(css_common_path)
 
       expect(helper.webpacked_css_tags entry)
         .to include(css_other_path, css_common_path)
@@ -39,9 +39,9 @@ describe Webpacked::Helper do
     let(:kind) { :js }
     let(:path) { "/path/to/main.js" }
     it "return asset path for entry" do
-      allow(Webpacked::Manifest).to receive(:asset_paths).with(kind, entry).and_return(path)
+      allow(Webpacked::Manifest).to receive(:asset_paths).with(entry, kind).and_return(path)
 
-      expect(helper.webpacked_asset_path kind, entry).to eq(path)
+      expect(helper.webpacked_asset_path entry, kind).to eq(path)
     end
   end
 end

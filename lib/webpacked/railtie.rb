@@ -15,6 +15,7 @@ module Webpacked
     config.webpacked.common_entry_name = "common"
     config.webpacked.bin = "node_modules/.bin/webpack"
     config.webpacked.config = "frontend/main.config.js"
+    config.webpacked.dev_server = Rails.env.development?
 
     initializer "webpacked.load_manifest" do |app|
       Webpacked::Manifest.load_manifest! if Rails.configuration.webpacked.load_manifest_on_initialize

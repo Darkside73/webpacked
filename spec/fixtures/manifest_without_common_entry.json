@@ -1,0 +1,6 @@
+{
+  "main_page": {
+    "js": "/assets/webpack/bundle-main_page.js",
+    "css": "/assets/webpack/bundle-main_page.css"
+  }
+}

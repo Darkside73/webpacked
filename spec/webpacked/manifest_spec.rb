@@ -1,26 +1,11 @@
 require "spec_helper"
 
 describe Webpacked::Manifest do
-  let(:manifest) do
-    <<-EOF
-      {
-        "common": {
-          "js": "/assets/webpack/bundle-common.js",
-          "css": "/./assets/webpack/bundle-common.css"
-        },
-        "main_page": {
-          "js": "/assets/webpack/bundle-main_page.js",
-          "css": "/assets/webpack/bundle-main_page.css"
-        }
-      }
-    EOF
-  end
 
   context "when manifest file exists" do
+    let(:manifest_path) { 'spec/fixtures/regular_manifest.json' }
     before do
-      manifest_path = ::Rails.root.join("webpack-assets.json")
-      allow(File).to receive(:exist?).with(manifest_path).and_return(true)
-      allow(File).to receive(:read).with(manifest_path).and_return(manifest)
+      Rails.configuration.webpacked.manifest_path = manifest_path
     end
 
     describe "#asset_paths" do
@@ -35,6 +20,14 @@ describe Webpacked::Manifest do
         it "raise error" do
           expect { Webpacked::Manifest.asset_paths "missed", :js }
             .to raise_error(Webpacked::Manifest::EntryMissingError)
+        end
+
+        context "when entry is 'common'" do
+          let(:manifest_path) { 'spec/fixtures/manifest_without_common_entry.json' }
+          it 'do not raise error' do
+            common_name = Rails.configuration.webpacked.common_entry_name
+            expect(Webpacked::Manifest.asset_paths common_name, :js).to be_nil
+          end
         end
       end
 
