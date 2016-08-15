@@ -23,7 +23,7 @@ module Webpacked
       end
     end
 
-    def webpacked_asset_path(entry, kind)
+    def webpacked_asset_path(entry, kind = nil)
       Webpacked::Manifest.asset_paths(entry, kind)
     end
   end

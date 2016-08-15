@@ -19,7 +19,7 @@ module Webpacked
 
     class << self
 
-      def asset_paths(entry, kind)
+      def asset_paths(entry, kind = nil)
         validate_asset_kind(kind)
         if Rails.configuration.webpacked.dev_server
           @manifest = load_manifest!
@@ -27,7 +27,9 @@ module Webpacked
           @manifest ||= load_manifest!
         end
         validate_entry(entry)
-        @manifest[entry][kind] if @manifest[entry]
+
+        return @manifest[entry] unless kind
+        return @manifest[entry][kind] if @manifest[entry]
       end
 
       def load_manifest!
@@ -45,7 +47,9 @@ module Webpacked
       private
 
       def validate_asset_kind(kind)
-        raise UnknownAssetKindError, kind unless ASSET_KINDS.include?(kind)
+        if kind
+          raise UnknownAssetKindError, kind unless ASSET_KINDS.include?(kind)
+        end
       end
 
       def validate_entry(entry)

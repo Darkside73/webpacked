@@ -8,12 +8,19 @@ describe Webpacked::Manifest do
       Rails.configuration.webpacked.manifest_path = manifest_path
     end
 
-    describe "#asset_paths" do
-      it "load assets" do
+    describe ".asset_paths" do
+      it "return js or css asset path for given entry" do
         expect(Webpacked::Manifest.asset_paths "common", :js)
           .to eq("/assets/webpack/bundle-common.js")
         expect(Webpacked::Manifest.asset_paths "common", :css)
           .to eq("/assets/webpack/bundle-common.css")
+      end
+
+      it "return js and css asset paths for given entry" do
+        expect(Webpacked::Manifest.asset_paths "common")
+          .to include(css: "/assets/webpack/bundle-common.css")
+        expect(Webpacked::Manifest.asset_paths "common")
+          .to include(js: "/assets/webpack/bundle-common.js")
       end
 
       context "when entry point is missed" do
@@ -40,4 +47,16 @@ describe Webpacked::Manifest do
     end
   end
 
+  context "when manifest file does not exist" do
+    let(:manifest_path) { 'not/exists.json' }
+    before do
+      Rails.configuration.webpacked.manifest_path = manifest_path
+    end
+    describe ".load_manifest!" do
+      it "raise error" do
+        expect { Webpacked::Manifest.load_manifest! }
+          .to raise_error(Webpacked::Manifest::LoadError)
+      end
+    end
+  end
 end
