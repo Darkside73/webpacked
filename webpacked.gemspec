@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.email       = ["andrey.garbuz@gmail.com"]
   s.homepage    = "https://github.com/Darkside73/webpacked"
   s.summary     = "Easy webpack and Rails integration"
-  s.description = "Ready for production gem to use webpack within Rails application"
+  s.description = "Ready for production gem to use webpack and hot reload within Rails application"
   s.license     = "MIT"
 
   s.files = Dir["lib/**/*", "MIT-LICENSE", "Rakefile", "README.md"]

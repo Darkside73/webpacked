@@ -10,7 +10,7 @@ describe Webpacked::ControllerHelper do
     webpacked_entry "bar"
   end
 
-  it "assing webpacked entry name to specific controller" do
+  it "assign webpacked entry name to specific controller" do
     expect(FooController.webpacked_entry_name).to eq("foo")
     expect(BarController.webpacked_entry_name).to eq("bar")
   end
