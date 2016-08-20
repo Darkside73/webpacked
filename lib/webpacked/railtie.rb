@@ -5,6 +5,7 @@ require 'webpacked/helper'
 require 'webpacked/controller_helper'
 
 module Webpacked
+  # :nodoc:
   class Railtie < ::Rails::Railtie
     config.webpacked = ActiveSupport::OrderedOptions.new
 

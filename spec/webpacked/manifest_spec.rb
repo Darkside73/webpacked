@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Webpacked::Manifest do
-
   context 'when manifest file exists' do
     let(:manifest_path) { 'spec/fixtures/regular_manifest.json' }
     before do

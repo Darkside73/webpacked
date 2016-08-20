@@ -1,16 +1,20 @@
 module Webpacked
+  # Webpack manifest loading, caching and entry point retrieval
   class Manifest
     ASSET_KINDS = [:js, :css]
 
+    # Raised if webpack manifest not readable for whatever reason
     class LoadError < StandardError
     end
 
+    # Raised if something but +:js+ or +:css+ passed as asset kind
     class UnknownAssetKindError < StandardError
       def initialize(kind)
         super "Unknown asset kind: #{kind}"
       end
     end
 
+    # Raised if an entry point does not exist in the webpack manifest
     class EntryMissingError < StandardError
       def initialize(entry)
         super "Entry point is missed: #{entry}"
@@ -18,6 +22,8 @@ module Webpacked
     end
 
     class << self
+      # Load manifest from file and cache it if +Rails.configuration.webpacked.dev_server+ set to +false+.
+      # Return entry point asset path for +:js+ or +:css+ kind or both if +kind+ skipped
       def asset_paths(entry, kind = nil)
         validate_asset_kind(kind)
         if Rails.configuration.webpacked.dev_server
@@ -31,6 +37,7 @@ module Webpacked
         return @manifest[entry][kind] if @manifest[entry]
       end
 
+      # Force to load manifest from file
       def load_manifest!
         manifest_path = Rails.configuration.webpacked.manifest_path
         manifest_path = Rails.root.join(manifest_path)
