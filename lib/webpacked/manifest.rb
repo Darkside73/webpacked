@@ -18,7 +18,6 @@ module Webpacked
     end
 
     class << self
-
       def asset_paths(entry, kind = nil)
         validate_asset_kind(kind)
         if Rails.configuration.webpacked.dev_server
@@ -33,13 +32,14 @@ module Webpacked
       end
 
       def load_manifest!
-        assets_manifest = Rails.root.join(Rails.configuration.webpacked.manifest_path)
+        manifest_path = Rails.configuration.webpacked.manifest_path
+        manifest_path = Rails.root.join(manifest_path)
         manifest = {}
-        if File.exist?(assets_manifest)
-          manifest = JSON.parse(File.read assets_manifest).with_indifferent_access
+        if File.exist?(manifest_path)
+          manifest = JSON.parse(File.read manifest_path).with_indifferent_access
           clean_asset_paths(manifest)
-        else
-          raise LoadError.new("File #{assets_manifest} not found") if Rails.configuration.webpacked.enabled
+        elsif Rails.configuration.webpacked.enabled
+          raise LoadError, "File #{manifest_path} not found"
         end
         manifest
       end
@@ -47,9 +47,8 @@ module Webpacked
       private
 
       def validate_asset_kind(kind)
-        if kind
-          raise UnknownAssetKindError, kind unless ASSET_KINDS.include?(kind)
-        end
+        return unless kind
+        raise UnknownAssetKindError, kind unless ASSET_KINDS.include?(kind)
       end
 
       def validate_entry(entry)
@@ -61,7 +60,7 @@ module Webpacked
       def clean_asset_paths(manifest)
         manifest.each do |entry, assets|
           assets.each do |kind, asset_path|
-            manifest[entry][kind] = if asset_path =~ /(http[s]?):\/\//i
+            manifest[entry][kind] = if asset_path =~ %r{(http[s]?)://}i
               asset_path
             else
               Pathname.new(asset_path).cleanpath.to_s

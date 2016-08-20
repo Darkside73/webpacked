@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'rubocop'
 # Declare your gem's dependencies in webpacked.gemspec.
 # Bundler will treat runtime dependencies like base dependencies, and
 # development dependencies will be added by default to the :development group.

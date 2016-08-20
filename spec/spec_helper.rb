@@ -1,5 +1,5 @@
-require "rails"
-require "webpacked"
+require 'rails'
+require 'webpacked'
 
 module DummyApplication
   # :nodoc:
@@ -24,7 +24,7 @@ end
 class DummyApplicationController
   include Webpacked::ControllerHelper
 
-  def self.helper_method(*args)
+  def self.helper_method(*)
   end
 end
 

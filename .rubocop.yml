@@ -1,0 +1,31 @@
+AllCops:
+  DisplayCopNames: true
+  DisplayStyleGuide: true
+  Exclude:
+    - "*.gemspec"
+    - bin/*
+
+Lint/EndAlignment:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/MutableConstant:
+  Enabled: false
+
+Style/NestedParenthesizedCalls:
+  Enabled: false
+
+Style/IndentationWidth:
+  Enabled: false
+
+Style/ElseAlignment:
+  Enabled: false
+
+Style/LambdaCall:
+  Enabled: false
+
+Metrics/LineLength:
+  Severity: refactor
+  Max: 120

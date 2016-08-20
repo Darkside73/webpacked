@@ -1,1 +1,1 @@
-require "webpacked/rails"
+require 'webpacked/rails'

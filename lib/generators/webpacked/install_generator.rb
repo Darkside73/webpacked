@@ -3,28 +3,28 @@ module Webpacked
     source_root File.expand_path('../templates', __FILE__)
 
     def use_foreman
-      if yes?("Would you like to use foreman to start webpack-dev-server and rails server at same time?")
-        gem "foreman"
-        copy_file "Procfile"
-        run "bundle install" if yes?("Run 'bundle install' for you?")
+      if yes?('Would you like to use foreman to start webpack-dev-server and rails server at same time?')
+        gem 'foreman'
+        copy_file 'Procfile'
+        run 'bundle install' if yes?("Run 'bundle install' for you?")
       end
     end
 
     def copy_frontend_dir
-      directory "frontend"
+      directory 'frontend'
     end
 
     def prepare_package_json
-      get "package.json" do |content|
+      get 'package.json' do |content|
         content.gsub!(/\{\{(.+?)\}\}/) do
-          Rails.configuration.webpacked.send($1)
+          Rails.configuration.webpacked.send(Regexp.last_match(1))
         end
-        create_file "package.json", content
+        create_file 'package.json', content
       end
     end
 
     def add_to_gitignore
-      append_to_file ".gitignore" do
+      append_to_file '.gitignore' do
         <<-EOF.strip_heredoc
         # Added by webpacked
         /node_modules
@@ -34,7 +34,7 @@ module Webpacked
     end
 
     def run_npm_install
-      run "npm install" if yes?("Run 'npm install' for you?")
+      run 'npm install' if yes?("Run 'npm install' for you?")
     end
 
     def whats_next
