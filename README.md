@@ -33,7 +33,7 @@ Webpack configs are divided into on three files:
   1. `frontend/development.config.js` contains setup specific for development
   1. `frontend/production.config.js` includes production optimizations
 
-Follow comments in these files and webpack official docs to conclude what meets you requirements.
+Follow the comments in these files and webpack official docs to conclude what meets your requirements.
 
 Environment is defined via `NODE_ENV` variable and initialized in`frontend/main.config.js`. Normally you don't need to manual set up `NODE_ENV` unless you want to add another environment for your frontend application.
 
@@ -61,9 +61,9 @@ To add webpacked assets in to your application, use following helpers:
 </html>
 ```
 
-Where `'application'` is a one of the your entry points in webpack config.
+Where `application` is a one of the your entry points in webpack config.
 
-NOTE: if you using [common chunks optimization](https://webpack.github.io/docs/code-splitting.html#split-app-and-vendor-code) (it is so indeed in production most likely), these helpers may produce additional CSS/Javascript include tag for that common bundle.
+**NOTE**: if you using [common chunks optimization](https://webpack.github.io/docs/code-splitting.html#split-app-and-vendor-code) (it is so indeed in production most likely), these helpers may produce additional CSS/Javascript include tag for that common bundle.
 
 You should not concern about including any extra scripts to get hot module reloading works: it integrates transparently through a same webpack manifest file.
 
@@ -109,7 +109,7 @@ Gem exposes a few configuration options:
   * `webpacked.enabled` default to `true`; you probably want to disable webpacked in test environment, so helpers will not fail if manifest does not exist
   * `webpacked.manifest_path` default to `webpack-assets.json`
   * `webpacked.load_manifest_on_initialize` default to `false`; if `true` then parse manifest on application bootstrap
-  * `webpacked.common_entry_name` default to `common` (if you've changes this, you need to change it in webpack config as well)
+  * `webpacked.common_entry_name` default to `common` (if you've changed this, you need to update it in the webpack config as well)
   * `webpacked.bin` default to `node_modules/.bin/webpack`
   * `webpacked.config` default to `frontend/main.config.js`
   * `webpacked.dev_server` enabled only in development mode
@@ -120,16 +120,16 @@ Gem exposes a few configuration options:
 
 ### Installation and usage
 
-To deploy generated assets add `require "capistrano/webpacked"` to your `Capfile`. The `deploy:webpacked:build` task will run automaticaly as after `deploy:updated` hook.
+To deploy generated assets add `require "capistrano/webpacked"` to your `Capfile`.
 
-Also you need add some code in to `deploy.rb`:
+Also you need to add some code in to `deploy.rb`:
 
   * set up the `:assets_roles` so **webpacked** could run its tasks
   * define a hook when the task should be run: `after 'deploy:updated', 'deploy:webpacked:build'` or (if you use sprockets) `before 'deploy:compile_assets', 'deploy:webpacked:build'` are good variants
 
 What under the hood? The task makes diff of files and folders (specified in `:webpacked_dependencies` option) in current release against previous release and decides whether to run production webpack build. If there is no diff then simply a manifest copied from previous release path. If some of dependencies were changed then production build starts *locally* and assets synchronized via `rsync` over SSH.
 
-NOTE: scince webpack build runs locally, you should pay an extra attention to your working copy condition: current branch, not published commits, not commited changes, etc.
+**NOTE**: scince webpack build runs locally, you should pay an extra attention to your working copy condition: current branch, not published commits, not commited changes, etc.
 
 Additionally there are some extra tasks exposed (they are used by `deploy:webpacked:build` internally):
 
