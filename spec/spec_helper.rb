@@ -1,3 +1,4 @@
+ENV['RAILS_ENV'] ||= 'test'
 require 'rails'
 require 'webpacked'
 
@@ -5,6 +6,7 @@ module DummyApplication
   # :nodoc:
   class Application < Rails::Application
     config.eager_load = false
+    config.webpacked.dev_server = true
     config.webpacked.load_manifest_on_initialize = false
   end
 end
