@@ -36,6 +36,12 @@ namespace :deploy do
               end
             end
 
+            latest_manifest_path = latest_release_path.join(OPTIONS.(:manifest_path))
+            unless test("[[ -f #{latest_manifest_path} ]]")
+              info "Latest webpack manifest not found: #{latest_manifest_path}. Need rebuild"
+              raise WebpackedBuildRequired
+            end
+
             info 'Skipping webpack build, no diff found'
 
             execute(
@@ -62,7 +68,6 @@ namespace :deploy do
 
     task :sync do
       on roles(fetch(:assets_roles)) do
-        info 'Sync assets...'
         upload!(
           OPTIONS.(:deploy_manifest_path),
           release_path.join(OPTIONS.(:manifest_path))
@@ -71,7 +76,8 @@ namespace :deploy do
       end
       roles(fetch(:assets_roles)).each do |host|
         run_locally do
-          local_output_path = fetch(:webpacked_local_output_path)
+          info 'Sync assets...'
+          local_output_path = OPTIONS.(:local_output_path)
           release_output_path = shared_path.join(OPTIONS.(:release_output_path))
           `rsync -avzr --delete #{local_output_path} #{host.user}@#{host.hostname}:#{release_output_path.parent}`
         end
