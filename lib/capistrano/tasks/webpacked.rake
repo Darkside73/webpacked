@@ -49,7 +49,6 @@ namespace :deploy do
         end
       end
     end
-    after 'deploy:updated', 'deploy:webpacked:build'
 
     task :build_force do
       run_locally do
