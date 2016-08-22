@@ -122,9 +122,12 @@ Gem exposes a few configuration options:
 
 To deploy generated assets add `require "capistrano/webpacked"` to your `Capfile`. The `deploy:webpacked:build` task will run automaticaly as after `deploy:updated` hook.
 
-Also you need to set up the `:assets_roles` in `deploy.rb` so **webpacked** to run its tasks.
+Also you need add some code in to `deploy.rb`:
 
-What under hood? The task makes diff of files and folders (specified in `:webpacked_dependencies` option) in current release against previous release and decides whether to run production webpack build. If there is no diff then simply a manifest copied from previous release path. If some of dependencies were changed then production build starts *locally* and assets synchronized via `rsync` over SSH.
+  * set up the `:assets_roles` so **webpacked** could run its tasks
+  * define a hook when the task should be run: `after 'deploy:updated', 'deploy:webpacked:build'` or (if you use sprockets) `before 'deploy:compile_assets', 'deploy:webpacked:build'` are good variants
+
+What under the hood? The task makes diff of files and folders (specified in `:webpacked_dependencies` option) in current release against previous release and decides whether to run production webpack build. If there is no diff then simply a manifest copied from previous release path. If some of dependencies were changed then production build starts *locally* and assets synchronized via `rsync` over SSH.
 
 NOTE: scince webpack build runs locally, you should pay an extra attention to your working copy condition: current branch, not published commits, not commited changes, etc.
 
