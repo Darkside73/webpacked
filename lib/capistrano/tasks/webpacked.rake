@@ -31,7 +31,7 @@ namespace :deploy do
               # execute raises if there is a diff
               begin
                 execute(:diff, '-Nqr', release, latest)
-              rescue SSHKit::Runner::ExecuteError
+              rescue SSHKit::Command::Failed
                 raise WebpackedBuildRequired
               end
             end
