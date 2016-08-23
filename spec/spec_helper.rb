@@ -24,10 +24,12 @@ module DummyApplicationHelper
 end
 
 class DummyApplicationController
-  include Webpacked::ControllerHelper
-
   def self.helper_method(*)
   end
+
+  include Webpacked::ControllerHelper
+
+  webpacked_entry 'app'
 end
 
 Rails.application.initialize!
