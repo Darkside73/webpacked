@@ -57,5 +57,17 @@ describe Webpacked::Manifest do
           .to raise_error(Webpacked::Manifest::LoadError)
       end
     end
+
+    describe '.asset_paths' do
+      context 'when webpacked disabled' do
+        before do
+          Rails.configuration.webpacked.enabled = false
+        end
+        it 'does not raise error' do
+          expect { Webpacked::Manifest.asset_paths 'anything' }
+            .to_not raise_error
+        end
+      end
+    end
   end
 end

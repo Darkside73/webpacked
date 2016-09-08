@@ -25,6 +25,8 @@ module Webpacked
       # Load manifest from file and cache it if +Rails.configuration.webpacked.dev_server+ set to +false+.
       # Return entry point asset path for +:js+ or +:css+ kind or both if +kind+ skipped
       def asset_paths(entry, kind = nil)
+        return unless Rails.configuration.webpacked.enabled
+
         validate_asset_kind(kind)
         if Rails.configuration.webpacked.dev_server
           @manifest = load_manifest!
@@ -41,13 +43,10 @@ module Webpacked
       def load_manifest!
         manifest_path = Rails.configuration.webpacked.manifest_path
         manifest_path = Rails.root.join(manifest_path)
-        manifest = {}
-        if File.exist?(manifest_path)
-          manifest = JSON.parse(File.read manifest_path).with_indifferent_access
-          clean_asset_paths(manifest)
-        elsif Rails.configuration.webpacked.enabled
-          raise LoadError, "File #{manifest_path} not found"
-        end
+        raise LoadError, "File #{manifest_path} not found" unless File.exist?(manifest_path)
+
+        manifest = JSON.parse(File.read manifest_path).with_indifferent_access
+        clean_asset_paths(manifest)
         manifest
       end
 
