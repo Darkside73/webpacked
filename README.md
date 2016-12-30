@@ -53,10 +53,10 @@ To add webpacked assets in to your application, use following helpers:
 <!DOCTYPE html>
 <html>
   <head>
-    <%= webpacked_css_tags 'application' %>
+    <%== webpacked_css_tags 'application' %>
   </head>
   <body>
-    <%= webpacked_js_tags 'application' %>
+    <%== webpacked_js_tags 'application' %>
   </body>
 </html>
 ```
@@ -82,13 +82,13 @@ class FooController < ApplicationController
 end
 
 class BarController < ApplicationController
-  webpacked_entry "bar"
+  webpacked_entry %w(vendor bar) # accepts multiple entry points as well
 end
 ```
 
 ```erb
-<%= webpacked_css_tags webpacked_entry_name %>
-<%= webpacked_js_tags webpacked_entry_name %>
+<%== webpacked_css_tags webpacked_entry_name %>
+<%== webpacked_js_tags webpacked_entry_name %>
 ```
 
 In the example above the decision which entry point to use comes in controllers instead views. Therefore in layout we can use a common `webpacked_entry_name` helper method. Notice that `webpacked_entry` in `ApplicationController` will be used if concrete controller does not define its own entry.
@@ -98,7 +98,7 @@ In the example above the decision which entry point to use comes in controllers 
 If you don't like none of the mentioned above, you can use more generic helpers to access webpack manifest:
 
   * `asset_tag(entry, kind)` return include tags for entry point `entry`; `kind` could be `:js` or `:css`
-  * `webpacked_asset_path(entry, kind = nil)` return only assets path for given entry
+  * `webpacked_asset_path(entry, kind = nil)` return only assets path for given entry (or entries if array given)
 
 Be aware that common entry point is not included by these methods. So if you use common chunks optimization do not forget to include `common` (or whatever name you pick) entry point manually.
 

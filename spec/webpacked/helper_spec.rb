@@ -12,12 +12,20 @@ describe Webpacked::Helper do
     let(:entry) { 'main_page' }
     let(:js_common_path) { '/path/to/common.js' }
     let(:js_other_path) { '/path/to/main.js' }
+    before { allow(Webpacked::Manifest).to receive(:asset_paths).with(@common, :js).and_return(js_common_path) }
     it 'return js script tags including common entry' do
       allow(Webpacked::Manifest).to receive(:asset_paths).with(entry, :js).and_return(js_other_path)
-      allow(Webpacked::Manifest).to receive(:asset_paths).with(@common, :js).and_return(js_common_path)
+      expect(helper.webpacked_js_tags entry).to include(js_other_path, js_common_path)
+    end
 
-      expect(helper.webpacked_js_tags entry)
-        .to include(js_other_path, js_common_path)
+    context 'multiple entries' do
+      let(:entries) { ['vendor', 'main_page'] }
+      let(:js_other_paths) { ['/path/to/vendor.js', '/path/to/main.js'] }
+      it 'return js scripts tags for multiple entries' do
+        allow(Webpacked::Manifest).to receive(:asset_paths).with(entries[0], :js).and_return(js_other_paths[0])
+        allow(Webpacked::Manifest).to receive(:asset_paths).with(entries[1], :js).and_return(js_other_paths[1])
+        expect(helper.webpacked_js_tags entries).to include(js_other_paths[0], js_other_paths[1])
+      end
     end
   end
 

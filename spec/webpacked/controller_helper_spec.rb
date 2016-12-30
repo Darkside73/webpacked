@@ -6,7 +6,7 @@ describe Webpacked::ControllerHelper do
   end
 
   class BarController < DummyApplicationController
-    webpacked_entry 'bar'
+    webpacked_entry ['bar']
   end
 
   class BazController < DummyApplicationController
@@ -14,7 +14,7 @@ describe Webpacked::ControllerHelper do
 
   it 'assign webpacked entry name to specific controller' do
     expect(FooController.webpacked_entry_name).to eq('foo')
-    expect(BarController.webpacked_entry_name).to eq('bar')
+    expect(BarController.webpacked_entry_name).to eq(['bar'])
   end
 
   context 'when entry not defined in controller' do

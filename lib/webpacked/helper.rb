@@ -1,24 +1,27 @@
 module Webpacked
   # Add new view helpers
   module Helper
-    # Return +javascript_include_tag+ for entry point.
+    # Return +javascript_include_tag+ for entry points.
     # Also common Javascript file could be included
-    def webpacked_js_tags(entry)
-      webpacked_tags entry, :js
+    def webpacked_js_tags(entries)
+      webpacked_tags entries, :js
     end
 
-    # Return +stylesheet_link_tag+ for entry point.
+    # Return +stylesheet_link_tag+ for entry points.
     # Also common CSS file could be included
-    def webpacked_css_tags(entry)
-      webpacked_tags entry, :css
+    def webpacked_css_tags(entries)
+      webpacked_tags entries, :css
     end
 
-    # Return include tags for entry point by given asset kind.
+    # Return include tags for entry points by given asset kind.
     # Also common file could be included
-    def webpacked_tags(entry, kind)
+    def webpacked_tags(entries, kind)
       common_entry = ::Rails.configuration.webpacked.common_entry_name
       common_bundle = asset_tag(common_entry, kind)
-      page_bundle   = asset_tag(entry, kind)
+      page_bundle = Array(entries).reduce('') do |memo, entry|
+        tag = asset_tag(entry, kind)
+        memo << tag if tag
+      end
       common_bundle ? common_bundle + page_bundle : page_bundle
     end
 
