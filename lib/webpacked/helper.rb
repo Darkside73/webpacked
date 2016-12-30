@@ -22,7 +22,7 @@ module Webpacked
         tag = asset_tag(entry, kind)
         memo << tag if tag
       end
-      common_bundle ? common_bundle + page_bundle : page_bundle
+      common_bundle ? [common_bundle, page_bundle].join : page_bundle
     end
 
     # Return include tags for entry point by given asset kind.
